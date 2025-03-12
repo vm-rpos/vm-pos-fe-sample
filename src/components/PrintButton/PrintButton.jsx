@@ -1,13 +1,19 @@
 import React from "react";
 
-const PrintButton = () => {
+const PrintButton = ({ selectedItems, totalAmount, isPrintOnly = true }) => {
   const handlePrint = async () => {
+    if (selectedItems.length === 0) {
+      alert("No items to print!");
+      return;
+    }
+
     const orderData = {
-      items: [
-        { name: "Burger", qty: 1, price: 5.0 },
-        { name: "Fries", qty: 2, price: 3.0 },
-      ],
-      total: 11.0,
+      items: selectedItems.map(item => ({
+        name: item.name,
+        qty: item.quantity,
+        price: isPrintOnly ? item.price : null
+      })),
+      total: isPrintOnly ? totalAmount : null
     };
 
     try {
@@ -31,6 +37,7 @@ const PrintButton = () => {
 
   return (
     <button
+      className="print-button"
       onClick={handlePrint}
     >
       Print Receipt

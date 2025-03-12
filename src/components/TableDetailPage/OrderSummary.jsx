@@ -1,4 +1,6 @@
 import React from 'react';
+import axios from 'axios';
+import PrintButton from '../PrintButton/PrintButton';
 
 const OrderSummary = ({ selectedItems, removeItemFromOrder, updateOrderInDatabase, navigate }) => {
   const calculateTotal = () => {
@@ -7,15 +9,66 @@ const OrderSummary = ({ selectedItems, removeItemFromOrder, updateOrderInDatabas
 
   const placeOrder = async () => {
     if (selectedItems.length === 0) return;
+    
+    // First update the order in the database
     await updateOrderInDatabase(selectedItems);
+    
+    // Print the order (without prices - for kitchen)
+    try {
+      const orderData = {
+        items: selectedItems.map(item => ({
+          name: item.name,
+          qty: item.quantity,
+          price: null
+        })),
+        total: null
+      };
+
+      await fetch("http://localhost:5000/api/print", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      });
+    } catch (err) {
+      console.error('Printing error:', err);
+    }
+    
     alert('Order placed successfully!');
     navigate('/');
   };
 
   const checkoutTable = async () => {
-    await updateOrderInDatabase([]);
-    alert('Checkout successful! Table is now available.');
-    navigate('/');
+    try {
+      const tableId = window.location.pathname.split('/').pop();
+      
+      // Print checkout receipt first (with prices - for customer)
+      try {
+        const orderData = {
+          items: selectedItems.map(item => ({
+            name: item.name,
+            qty: item.quantity,
+            price: item.price
+          })),
+          total: calculateTotal()
+        };
+
+        await fetch("http://localhost:5000/api/print", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(orderData),
+        });
+      } catch (err) {
+        console.error('Printing error:', err);
+      }
+      
+      // Use the correct method (DELETE) and endpoint
+      await axios.delete(`http://localhost:5000/api/tables/${tableId}/orders`);
+      alert('Checkout successful! Table is now available.');
+      navigate('/');
+    } catch (err) {
+      console.error('Checkout error:', err);
+      alert(`Failed to checkout table: ${err.response?.data?.message || err.message}`);
+    }
   };
 
   return (
@@ -34,8 +87,15 @@ const OrderSummary = ({ selectedItems, removeItemFromOrder, updateOrderInDatabas
             ))}
           </ul>
           <p className="total">Total: ₹{calculateTotal()}</p>
-          <button className="place-order" onClick={placeOrder}>Place Order</button>
-          <button className="checkout-order" onClick={checkoutTable}>Checkout</button>
+          <div className="action-buttons">
+            <button className="place-order" onClick={placeOrder}>Place Order</button>
+            <button className="checkout-order" onClick={checkoutTable}>Checkout</button>
+            <PrintButton 
+              selectedItems={selectedItems} 
+              totalAmount={calculateTotal()} 
+              isPrintOnly={true} 
+            />
+          </div>
         </>
       )}
     </div>
