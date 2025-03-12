@@ -275,14 +275,11 @@ const CategoryManagement = () => {
       console.error("Error deleting tag:", error);
     }
   };
-  
-
   // Edit tag
   const handleEdit = (id, name) => {
     setEditTagId(id);
     setNewTagName(name);
   };
-
   // Save edited tag
   const handleSave = async (id) => {
     try {

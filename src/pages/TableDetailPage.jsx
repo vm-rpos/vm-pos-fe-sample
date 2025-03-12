@@ -4,6 +4,7 @@ import axios from 'axios';
 import CategoryList from '../components/TableDetailPage/CategoryList';
 import MenuItems from '../components/TableDetailPage/MenuItems';
 import OrderSummary from '../components/TableDetailPage/OrderSummary';
+import PrintButton from '../components/PrintButton/PrintButton';
 
 const TableDetailPage = () => {
   const { id } = useParams();
@@ -76,6 +77,7 @@ const TableDetailPage = () => {
       <CategoryList categories={categories} activeCategory={activeCategory} onCategoryChange={handleCategoryChange} />
       <MenuItems activeCategory={activeCategory} addItemToOrder={addItemToOrder} />
       <OrderSummary selectedItems={selectedItems} removeItemFromOrder={removeItemFromOrder} updateOrderInDatabase={updateOrderInDatabase} navigate={navigate} />
+      <PrintButton />
     </div>
   );
 };
