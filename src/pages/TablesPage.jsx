@@ -73,7 +73,11 @@ const TablesPage = () => {
       </div>
 
       <TableForm createTable={createTable} />
-      <TableList tables={tables} deleteTable={deleteTable} />
+      <TableList 
+        tables={tables} 
+        deleteTable={deleteTable} 
+        updateTables={fetchTables} 
+      />
     </div>
   );
 };

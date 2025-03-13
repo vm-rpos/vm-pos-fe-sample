@@ -8,6 +8,8 @@ const API_BASE_URL = "http://localhost:5000/api/waiters";
 
 const WaiterPage = () => {
   const [waiters, setWaiters] = useState([]);
+  const [currentWaiter, setCurrentWaiter] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +37,23 @@ const WaiterPage = () => {
     }
   };
 
+  const updateWaiter = async (id, formData) => {
+    try {
+      const res = await axios.put(`${API_BASE_URL}/${id}`, formData, {
+        headers: { "Content-Type": "application/json" },
+      });
+      
+      setWaiters(
+        waiters.map((waiter) => (waiter._id === id ? res.data : waiter))
+      );
+      
+      setIsEditing(false);
+      setCurrentWaiter(null);
+    } catch (err) {
+      throw new Error(err.response?.data?.message || "Failed to update waiter");
+    }
+  };
+
   const deleteWaiter = async (id) => {
     try {
       await axios.delete(`${API_BASE_URL}/${id}`);
@@ -44,11 +63,35 @@ const WaiterPage = () => {
     }
   };
 
+  const editWaiter = (waiter) => {
+    setCurrentWaiter(waiter);
+    setIsEditing(true);
+  };
+
+  const cancelEdit = () => {
+    setCurrentWaiter(null);
+    setIsEditing(false);
+  };
+
   return (
     <div>
       <h2>Waiters</h2>
-      <WaiterForm addWaiter={addWaiter} />
-      <WaiterList waiters={waiters} deleteWaiter={deleteWaiter} />
+      {isEditing ? (
+        <WaiterForm 
+          addWaiter={addWaiter} 
+          updateWaiter={updateWaiter}
+          waiter={currentWaiter}
+          isEditing={isEditing}
+          cancelEdit={cancelEdit}
+        />
+      ) : (
+        <WaiterForm addWaiter={addWaiter} />
+      )}
+      <WaiterList 
+        waiters={waiters} 
+        deleteWaiter={deleteWaiter}
+        editWaiter={editWaiter}
+      />
       <button onClick={() => navigate("/")}>Back</button>
     </div>
   );
