@@ -4,7 +4,9 @@ import axios from 'axios';
 import DashboardHeader from '../components/Dashboard/DashboardHeader.jsx';
 import StatsCards from '../components/Dashboard/StatsCards.jsx';
 import DataTable from '../components/Dashboard/DataTable.jsx';
-import OrdersTable from '../components/Dashboard/OrdersTable.jsx'; // Add this import
+import OrdersTable from '../components/Dashboard/OrdersTable.jsx';
+import OrderCharts from '../components/Dashboard/OrderCharts.jsx';
+import WaiterPerformance from '../components/Dashboard/WaiterPerformance.jsx'; // Import the new component
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -12,25 +14,25 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [timeRange, setTimeRange] = useState('all');
-  const [orders, setOrders] = useState([]); // Add this state
-
+  const [orders, setOrders] = useState([]);
+  
   useEffect(() => {
     fetchAnalytics();
   }, [timeRange]);
-
+  
   const fetchAnalytics = async () => {
     try {
       setLoading(true);
       const response = await axios.get(`http://localhost:5000/api/analytics?timeRange=${timeRange}`);
       setAnalyticsData(response.data);
-          
-      // Also fetch orders with the same timeRange
+      
+      // Also fetch orders
       const ordersResponse = await axios.get(`http://localhost:5000/api/orders?timeRange=${timeRange}`);
-            
+      
       // Sort orders by total price (high to low)
       const sortedOrders = ordersResponse.data.sort((a, b) => b.total - a.total);
       setOrders(sortedOrders);
-            
+      
       setError(null);
     } catch (err) {
       setError('Failed to fetch analytics data');
@@ -39,20 +41,33 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
+  
   if (loading) return <div className="loading">Loading dashboard data...</div>;
   if (error) return <div className="error">{error}</div>;
   if (!analyticsData) return <div className="error">No data available</div>;
-
+  
   return (
     <div className="dashboard-container">
       <h1>Restaurant Dashboard</h1>
-
+      
       <DashboardHeader timeRange={timeRange} setTimeRange={setTimeRange} fetchAnalytics={fetchAnalytics} />
       <StatsCards analyticsData={analyticsData} />
-
-      {/* Add Orders Table at the top */}
+      
+      {/* Add Charts */}
+      <OrderCharts 
+        analyticsData={analyticsData} 
+        timeRange={timeRange} 
+        orders={orders}
+      />
+      
+      {/* Waiter Performance Table */}
+      {analyticsData.waitersData && analyticsData.waitersData.length > 0 && (
+        <WaiterPerformance waitersData={analyticsData.waitersData} />
+      )}
+      
+      {/* Order Table */}
       <OrdersTable orders={orders} />
-
+      
       <div className="dashboard-grid">
         <DataTable
           title="Most Popular Items"
@@ -63,7 +78,7 @@ const Dashboard = () => {
             revenue: item.revenue,
           }))}
         />
-
+        
         <DataTable
           title="Highest Revenue Items"
           columns={['Item', 'Revenue', 'Quantity Sold']}
@@ -73,7 +88,7 @@ const Dashboard = () => {
             count: item.count,
           }))}
         />
-
+        
         <DataTable
           title="Revenue by Category"
           columns={['Category', 'Revenue']}
@@ -82,7 +97,7 @@ const Dashboard = () => {
             revenue: category.revenue,
           }))}
         />
-
+        
         <DataTable
           title="Table Performance"
           columns={['Table', 'Items Sold', 'Revenue']}
@@ -95,7 +110,7 @@ const Dashboard = () => {
             }))}
         />
       </div>
-
+      
       <div className="navigation">
         <button onClick={() => navigate('/')}>Back to Tables</button>
         <button onClick={() => navigate('/menu-management')}>Manage Menu</button>
