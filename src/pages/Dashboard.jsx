@@ -4,6 +4,7 @@ import axios from 'axios';
 import DashboardHeader from '../components/Dashboard/DashboardHeader.jsx';
 import StatsCards from '../components/Dashboard/StatsCards.jsx';
 import DataTable from '../components/Dashboard/DataTable.jsx';
+import OrdersTable from '../components/Dashboard/OrdersTable.jsx'; // Add this import
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [timeRange, setTimeRange] = useState('all');
+  const [orders, setOrders] = useState([]); // Add this state
 
   useEffect(() => {
     fetchAnalytics();
@@ -21,6 +23,14 @@ const Dashboard = () => {
       setLoading(true);
       const response = await axios.get('http://localhost:5000/api/analytics');
       setAnalyticsData(response.data);
+      
+      // Also fetch orders
+      const ordersResponse = await axios.get('http://localhost:5000/api/orders');
+      
+      // Sort orders by total price (high to low)
+      const sortedOrders = ordersResponse.data.sort((a, b) => b.total - a.total);
+      setOrders(sortedOrders);
+      
       setError(null);
     } catch (err) {
       setError('Failed to fetch analytics data');
@@ -40,6 +50,9 @@ const Dashboard = () => {
 
       <DashboardHeader timeRange={timeRange} setTimeRange={setTimeRange} fetchAnalytics={fetchAnalytics} />
       <StatsCards analyticsData={analyticsData} />
+
+      {/* Add Orders Table at the top */}
+      <OrdersTable orders={orders} />
 
       <div className="dashboard-grid">
         <DataTable
