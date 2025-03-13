@@ -16,9 +16,17 @@ const DataTable = ({ title, columns, data }) => {
           {data.length > 0 ? (
             data.map((row, index) => (
               <tr key={index}>
-                {Object.values(row).map((value, i) => (
-                  <td key={i}>{typeof value === 'number' ? `₹${value.toFixed(2)}` : value}</td>
-                ))}
+                {Object.keys(row).map((key, i) => {
+                  const value = row[key];
+                  // Check if this column should be formatted as currency or quantity
+                  if (key === 'revenue' || key === 'total' || key === 'price') {
+                    return <td key={i}>₹{typeof value === 'number' ? value.toFixed(2) : value}</td>;
+                  } else if (key === 'quantity' || key === 'count' || key === 'totalItems') {
+                    return <td key={i}>{value}</td>; // No currency symbol for quantities
+                  } else {
+                    return <td key={i}>{value}</td>;
+                  }
+                })}
               </tr>
             ))
           ) : (
