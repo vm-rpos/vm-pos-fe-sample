@@ -8,7 +8,10 @@ const OrderSummary = ({ selectedItems, removeItemFromOrder, updateOrderInDatabas
   };
 
   const placeOrder = async () => {
-    if (selectedItems.length === 0) return;
+    if (selectedItems.length === 0) {
+      alert('Please add items to place an order');
+      return;
+    }
     
     // First update the order in the database
     await updateOrderInDatabase(selectedItems);
@@ -19,18 +22,24 @@ const OrderSummary = ({ selectedItems, removeItemFromOrder, updateOrderInDatabas
         items: selectedItems.map(item => ({
           name: item.name,
           qty: item.quantity,
-          price: null
+          price: null // No prices for kitchen order
         })),
-        total: null
+        total: null // No total for kitchen order
       };
 
-      await fetch("http://localhost:5000/api/print", {
+      const response = await fetch("http://localhost:5000/api/print", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderData),
       });
+      
+      const result = await response.json();
+      if (!result.success) {
+        console.warn("Kitchen receipt printing failed:", result.error);
+      }
     } catch (err) {
       console.error('Printing error:', err);
+      // Don't block order placement if printing fails
     }
     
     alert('Order placed successfully!');
@@ -38,6 +47,11 @@ const OrderSummary = ({ selectedItems, removeItemFromOrder, updateOrderInDatabas
   };
 
   const checkoutTable = async () => {
+    if (selectedItems.length === 0) {
+      alert('No items to checkout');
+      return;
+    }
+    
     try {
       const tableId = window.location.pathname.split('/').pop();
       
@@ -52,13 +66,19 @@ const OrderSummary = ({ selectedItems, removeItemFromOrder, updateOrderInDatabas
           total: calculateTotal()
         };
 
-        await fetch("http://localhost:5000/api/print", {
+        const response = await fetch("http://localhost:5000/api/print", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(orderData),
         });
+        
+        const result = await response.json();
+        if (!result.success) {
+          console.warn("Customer receipt printing failed:", result.error);
+        }
       } catch (err) {
         console.error('Printing error:', err);
+        // Don't block checkout if printing fails
       }
       
       // Use the correct method (DELETE) and endpoint
@@ -78,11 +98,12 @@ const OrderSummary = ({ selectedItems, removeItemFromOrder, updateOrderInDatabas
         <p>No items selected</p>
       ) : (
         <>
-          <ul>
+          <ul className="items-list">
             {selectedItems.map((item, index) => (
-              <li key={index}>
-                {item.name} - ₹{item.price} x {item.quantity} = ₹{item.price * item.quantity}
-                <button onClick={() => removeItemFromOrder(index)}>Remove</button>
+              <li key={index} className="item-row">
+                <span className="item-name">{item.name}</span>
+                <span className="item-price">₹{item.price} x {item.quantity} = ₹{item.price * item.quantity}</span>
+                <button className="remove-btn" onClick={() => removeItemFromOrder(index)}>Remove</button>
               </li>
             ))}
           </ul>
@@ -91,7 +112,11 @@ const OrderSummary = ({ selectedItems, removeItemFromOrder, updateOrderInDatabas
             <button className="place-order" onClick={placeOrder}>Place Order</button>
             <button className="checkout-order" onClick={checkoutTable}>Checkout</button>
             <PrintButton 
-              selectedItems={selectedItems} 
+              selectedItems={selectedItems.map(item => ({
+                name: item.name,
+                qty: item.quantity,
+                price: item.price
+              }))} 
               totalAmount={calculateTotal()} 
               isPrintOnly={true} 
             />
