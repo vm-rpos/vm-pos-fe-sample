@@ -21,16 +21,16 @@ const Dashboard = () => {
   const fetchAnalytics = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/analytics');
+      const response = await axios.get(`http://localhost:5000/api/analytics?timeRange=${timeRange}`);
       setAnalyticsData(response.data);
-      
-      // Also fetch orders
-      const ordersResponse = await axios.get('http://localhost:5000/api/orders');
-      
+          
+      // Also fetch orders with the same timeRange
+      const ordersResponse = await axios.get(`http://localhost:5000/api/orders?timeRange=${timeRange}`);
+            
       // Sort orders by total price (high to low)
       const sortedOrders = ordersResponse.data.sort((a, b) => b.total - a.total);
       setOrders(sortedOrders);
-      
+            
       setError(null);
     } catch (err) {
       setError('Failed to fetch analytics data');
@@ -39,7 +39,6 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
-
   if (loading) return <div className="loading">Loading dashboard data...</div>;
   if (error) return <div className="error">{error}</div>;
   if (!analyticsData) return <div className="error">No data available</div>;

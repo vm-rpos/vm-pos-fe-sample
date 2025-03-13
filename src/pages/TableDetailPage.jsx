@@ -35,9 +35,19 @@ const TableDetailPage = () => {
     }
   };
 
-  const updateOrderInDatabase = async (items) => {
+  const updateOrderInDatabase = async (items, waiterId = null) => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/tables/${id}/orders`, { orders: items });
+      const orderData = { orders: items };
+      
+      // Include waiterId in the request if provided
+      if (waiterId) {
+        orderData.waiterId = waiterId;
+      }
+      
+      const response = await axios.post(
+        `http://localhost:5000/api/tables/${id}/orders`, 
+        orderData
+      );
       setTable(response.data);
     } catch (err) {
       setError('Failed to update order');
@@ -73,13 +83,20 @@ const TableDetailPage = () => {
     <div className="table-detail-page">
       <h1>{table.name} (Table {table.tableNumber})</h1>
       <p>Status: {table.hasOrders ? 'Served' : 'Available'}</p>
-      <CategoryList categories={categories} activeCategory={activeCategory} onCategoryChange={handleCategoryChange} />
-      <MenuItems activeCategory={activeCategory} addItemToOrder={addItemToOrder} />
-      <OrderSummary 
-        selectedItems={selectedItems} 
-        removeItemFromOrder={removeItemFromOrder} 
-        updateOrderInDatabase={updateOrderInDatabase} 
-        navigate={navigate} 
+      <CategoryList 
+        categories={categories} 
+        activeCategory={activeCategory} 
+        onCategoryChange={handleCategoryChange} 
+      />
+      <MenuItems 
+        activeCategory={activeCategory} 
+        addItemToOrder={addItemToOrder} 
+      />
+      <OrderSummary
+        selectedItems={selectedItems}
+        removeItemFromOrder={removeItemFromOrder}
+        updateOrderInDatabase={updateOrderInDatabase}
+        navigate={navigate}
       />
     </div>
   );

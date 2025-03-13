@@ -11,6 +11,13 @@ const DashboardHeader = ({ timeRange, setTimeRange, fetchAnalytics }) => {
           <option value="week">This Week</option>
           <option value="month">This Month</option>
         </select>
+        
+        {timeRange !== 'all' && (
+          <span className="time-range-indicator">
+            Showing data for: <strong>{timeRange === 'today' ? 'Today' : 
+              timeRange === 'week' ? 'This Week' : 'This Month'}</strong>
+          </span>
+        )}
       </div>
       <button className="refresh-button" onClick={fetchAnalytics}>
         Refresh Data

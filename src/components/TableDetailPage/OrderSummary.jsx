@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import PrintButton from '../PrintButton/PrintButton';
+import WaiterSelector from './WaiterSelector';
 
 const OrderSummary = ({ selectedItems, removeItemFromOrder, updateOrderInDatabase, navigate }) => {
+  const [selectedWaiterId, setSelectedWaiterId] = useState('');
+
   const calculateTotal = () => {
     return selectedItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };
@@ -13,8 +16,13 @@ const OrderSummary = ({ selectedItems, removeItemFromOrder, updateOrderInDatabas
       return;
     }
     
+    if (!selectedWaiterId) {
+      alert('Please select a waiter to assign this order');
+      return;
+    }
+    
     // First update the order in the database
-    await updateOrderInDatabase(selectedItems);
+    await updateOrderInDatabase(selectedItems, selectedWaiterId);
     
     // Print the order (without prices - for kitchen)
     try {
@@ -24,6 +32,7 @@ const OrderSummary = ({ selectedItems, removeItemFromOrder, updateOrderInDatabas
           qty: item.quantity,
           price: null // No prices for kitchen order
         })),
+        waiterId: selectedWaiterId,
         total: null // No total for kitchen order
       };
 
@@ -108,6 +117,13 @@ const OrderSummary = ({ selectedItems, removeItemFromOrder, updateOrderInDatabas
             ))}
           </ul>
           <p className="total">Total: ₹{calculateTotal()}</p>
+          
+          {/* Add waiter selector component */}
+          <WaiterSelector 
+            selectedWaiterId={selectedWaiterId} 
+            onWaiterSelect={setSelectedWaiterId} 
+          />
+          
           <div className="action-buttons">
             <button className="place-order" onClick={placeOrder}>Place Order</button>
             <button className="checkout-order" onClick={checkoutTable}>Checkout</button>
