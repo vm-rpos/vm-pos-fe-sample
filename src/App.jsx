@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import TablesPage from "./pages/TablesPage";
-import TableDetailPage from "./pages/TableDetailPage";
-import CategoryManagement from "./pages/CategoryManagement";
-import Dashboard from "./pages/Dashboard";
-import RestaurantDetails from "./pages/RestaurantDetails";
-import WaiterPage from "./pages/WaiterPage";
+import TablesPage from "./pos/pages/TablesPage";
+import TableDetailPage from "./pos/pages/TableDetailPage";
+import CategoryManagement from "./pos/pages/CategoryManagement";
+import Dashboard from "./pos/pages/Dashboard";
+import RestaurantDetails from "./pos/pages/RestaurantDetails";
+import WaiterPage from "./pos/pages/WaiterPage";
 
 function App() {
   return (
