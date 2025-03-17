@@ -33,12 +33,12 @@ const CategoryManagement = () => {
       setLoading(true);
       // Fetch categories
       const categoriesResponse = await axios.get(
-        "http://localhost:5000/api/categories"
+        "http://localhost:5000/api-ivm/categories"
       );
       setCategories(categoriesResponse.data);
 
       // Fetch tags
-      const tagsResponse = await axios.get("http://localhost:5000/api/tags");
+      const tagsResponse = await axios.get("http://localhost:5000/api-ivm/tags");
       setTags(tagsResponse.data);
 
       setError(null);
@@ -56,7 +56,7 @@ const CategoryManagement = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/categories",
+        "http://localhost:5000/api-ivm/categories",
         {
           name: newCategoryName,
         }
@@ -82,7 +82,7 @@ const CategoryManagement = () => {
   const updateCategory = async (id) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/categories/${id}`,
+        `http://localhost:5000/api-ivm/categories/${id}`,
         {
           name: editCategoryName,
         }
@@ -114,7 +114,7 @@ const CategoryManagement = () => {
 
   const deleteCategory = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/categories/${id}`);
+      await axios.delete(`http://localhost:5000/api-ivm/categories/${id}`);
       setCategories(categories.filter((category) => category._id !== id));
       if (selectedCategory && selectedCategory._id === id) {
         setSelectedCategory(null);
@@ -137,7 +137,7 @@ const CategoryManagement = () => {
         .filter((tag) => tag !== "");
 
       const response = await axios.post(
-        `http://localhost:5000/api/categories/${selectedCategory._id}/items`,
+        `http://localhost:5000/api-ivm/categories/${selectedCategory._id}/items`,
         {
           name: newItemName,
           price: parseFloat(newItemPrice),
@@ -162,7 +162,7 @@ const CategoryManagement = () => {
       setNewItemTags("");
 
       // Refresh tags
-      const tagsResponse = await axios.get("http://localhost:5000/api/tags");
+      const tagsResponse = await axios.get("http://localhost:5000/api-ivm/tags");
       setTags(tagsResponse.data);
     } catch (err) {
       setError("Failed to add menu item");
@@ -195,7 +195,7 @@ const CategoryManagement = () => {
         .filter((tag) => tag !== "");
 
       const response = await axios.put(
-        `http://localhost:5000/api/categories/${categoryId}/items/${itemId}`,
+        `http://localhost:5000/api-ivm/categories/${categoryId}/items/${itemId}`,
         {
           name: editItemName,
           price: parseFloat(editItemPrice),
@@ -226,7 +226,7 @@ const CategoryManagement = () => {
       setEditItemTags("");
 
       // Refresh tags
-      const tagsResponse = await axios.get("http://localhost:5000/api/tags");
+      const tagsResponse = await axios.get("http://localhost:5000/api-ivm/tags");
       setTags(tagsResponse.data);
     } catch (err) {
       setError("Failed to update menu item");
@@ -237,7 +237,7 @@ const CategoryManagement = () => {
   const deleteMenuItem = async (categoryId, itemId) => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/categories/${categoryId}/items/${itemId}`
+        `http://localhost:5000/api-ivm/categories/${categoryId}/items/${itemId}`
       );
 
       // Update the categories list after deleting the item
@@ -267,8 +267,8 @@ const CategoryManagement = () => {
   // Delete tag
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/tags/${id}`, { method: "DELETE" });
-      const response = await fetch("http://localhost:5000/api/tags");
+      await fetch(`http://localhost:5000/api-ivm/tags/${id}`, { method: "DELETE" });
+      const response = await fetch("http://localhost:5000/api-ivm/tags");
       const updatedTags = await response.json();
       setTags(updatedTags);
     } catch (error) {
@@ -283,7 +283,7 @@ const CategoryManagement = () => {
   // Save edited tag
   const handleSave = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/tags/${id}`, {
+      const response = await fetch(`http://localhost:5000/api-ivm/tags/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: newTagName }),
@@ -306,7 +306,7 @@ const CategoryManagement = () => {
 
   return (
     <div className="category-management">
-      <h1>Menu Management</h1>
+      <h1>Menu Management ivm </h1>
 
       {error && <p className="error">{error}</p>}
 

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import VendorForm from "../components/VendorForm";
 import VendorList from "../components/VendorList";
 
-const API_BASE_URL = "http://localhost:5000/api/vendors";
+const API_BASE_URL = "http://localhost:5000/api-ivm/vendors";
 
 const VendorPage = () => {
   const [vendors, setVendors] = useState([]);

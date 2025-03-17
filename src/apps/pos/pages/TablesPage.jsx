@@ -59,7 +59,7 @@ const TablesPage = () => {
       {error && <p className="error">{error}</p>}
 
       <div className="actions">
-        <button onClick={() => navigate("/menu-management")} className="menu-button">
+        <button onClick={() => navigate("/menu-management")} className="menu-button bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
           Manage Menu
         </button>
       </div>
