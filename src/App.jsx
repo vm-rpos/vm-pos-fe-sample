@@ -13,6 +13,8 @@ import SaleOrderPage from "./apps/inventory/pages/SaleOrderPage";
 import StockoutOrderPage from "./apps/inventory/pages/StockoutOrderPage";
 import VendorPage from "./apps/inventory/pages/VendorPage";
 import OrderManagementPage from "./apps/inventory/pages/OrderManagementPage";
+import LoginPage from "./apps/pos/pages/LoginPage";
+import SignupPage from "./apps/pos/pages/SignupPage";
 import './App.css';
 
 function App() {
@@ -34,6 +36,8 @@ function App() {
         <Route path="/inventory/orders/stockoutOrder" element={<StockoutOrderPage />} />
         <Route path="/inventory/vendors" element={<VendorPage />} />
         <Route path="/inventory/orders" element={<OrderManagementPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>
     <a href="/home" className="text-red-600 hover:text-blue-800 font-semibold underline">
