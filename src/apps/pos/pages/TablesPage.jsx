@@ -31,16 +31,20 @@ const TablesPage = () => {
 
   const createTable = async (name, tableNumber) => {
     try {
-      const response = await axios.post("http://localhost:5000/api/tables", {
-        name,
-        tableNumber: parseInt(tableNumber),
-      });
+      const token = localStorage.getItem("token"); // ✅ Retrieve token
+  
+      const response = await axios.post("http://localhost:5000/api/tables", 
+        { name, tableNumber }, 
+        { headers: { Authorization: `Bearer ${token}` } } // ✅ Send token
+      );
+  
       setTables([...tables, response.data]);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to create table");
       console.error("Error creating table:", err);
     }
   };
+  
 
   const deleteTable = async (id) => {
     try {

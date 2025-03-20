@@ -15,6 +15,7 @@ function LoginPage() {
     try {
       const response = await axios.post("http://localhost:5000/api/auth/login", formData);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user)); // Store user data
       alert("Login successful!");
       navigate("/");
     } catch (error) {

@@ -38,22 +38,40 @@ const TableDetailPage = () => {
 
   const updateOrderInDatabase = async (items, waiterId = null) => {
     try {
-      const orderData = { orders: items };
+      const token = localStorage.getItem("token");
+      const user = JSON.parse(localStorage.getItem("user"));
       
-      // Include waiterId in the request if provided
+      if (!user || !user.restaurantId) {
+        throw new Error("Restaurant ID is missing. Please log in again.");
+      }
+      
+      const orderData = {
+        orders: items,
+      };
+      
       if (waiterId) {
         orderData.waiterId = waiterId;
       }
+      // No need to include restaurantId in request body as it should come from the token
       
       const response = await axios.post(
-        `http://localhost:5000/api/tables/${id}/orders`, 
-        orderData
+        `http://localhost:5000/api/tables/${id}/orders`,
+        orderData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+      
       setTable(response.data);
     } catch (err) {
       setError('Failed to update order');
+      console.error("Order update error:", err);
     }
   };
+  
 
   const handleCategoryChange = (category) => setActiveCategory(category);
 

@@ -54,14 +54,21 @@ const CategoryManagement = () => {
   const createCategory = async (e) => {
     e.preventDefault();
     if (!newCategoryName.trim()) return;
-
+  
     try {
+      const token = localStorage.getItem("token"); // Ensure user is authenticated
+  
       const response = await axios.post(
         "http://localhost:5000/api/categories",
+        { name: newCategoryName },
         {
-          name: newCategoryName,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Send token for authentication
+          },
         }
       );
+  
       setCategories([...categories, response.data]);
       setNewCategoryName("");
     } catch (err) {
@@ -69,6 +76,7 @@ const CategoryManagement = () => {
       console.error("Error creating category:", err);
     }
   };
+  
 
   const startEditingCategory = (category) => {
     setEditingCategory(category);
@@ -129,14 +137,15 @@ const CategoryManagement = () => {
   const addMenuItem = async (e) => {
     e.preventDefault();
     if (!newItemName.trim() || !newItemPrice || !selectedCategory) return;
-
+  
     try {
-      // Parse tags string into array
+      const token = localStorage.getItem("token"); // Ensure user is authenticated
+  
       const tagsArray = newItemTags
         .split(",")
         .map((tag) => tag.trim())
         .filter((tag) => tag !== "");
-
+  
       const response = await axios.post(
         `http://localhost:5000/api/categories/${selectedCategory._id}/items`,
         {
@@ -144,9 +153,15 @@ const CategoryManagement = () => {
           price: parseFloat(newItemPrice),
           description: newItemDescription,
           tags: tagsArray,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Send token for authentication
+          },
         }
       );
-
+  
       // Update the categories list with the new item
       const updatedCategories = categories.map((category) => {
         if (category._id === selectedCategory._id) {
@@ -154,14 +169,14 @@ const CategoryManagement = () => {
         }
         return category;
       });
-
+  
       setCategories(updatedCategories);
       setSelectedCategory(response.data);
       setNewItemName("");
       setNewItemPrice("");
       setNewItemDescription("");
       setNewItemTags("");
-
+  
       // Refresh tags
       const tagsResponse = await axios.get("http://localhost:5000/api/tags");
       setTags(tagsResponse.data);
@@ -170,6 +185,7 @@ const CategoryManagement = () => {
       console.error("Error adding menu item:", err);
     }
   };
+  
 
   const startEditingItem = (item) => {
     setEditingItem(item);

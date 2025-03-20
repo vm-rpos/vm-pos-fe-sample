@@ -29,14 +29,19 @@ const WaiterPage = () => {
 
   const addWaiter = async (formData) => {
     try {
+      const token = localStorage.getItem("token"); // Ensure user is authenticated
       const res = await axios.post(API_BASE_URL, formData, {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Send token for authentication
+        },
       });
       setWaiters([...waiters, res.data]);
     } catch (err) {
       throw new Error(err.response?.data?.message || "Failed to add waiter");
     }
   };
+  
 
   const updateWaiter = async (id, formData) => {
     try {
