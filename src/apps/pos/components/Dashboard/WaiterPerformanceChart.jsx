@@ -3,22 +3,37 @@ import Chart from 'chart.js/auto';
 
 const WaiterPerformanceChart = ({ waitersData }) => {
   const chartRef = useRef(null);
-  const chartInstanceRef = useRef(null); // Store chart instance here
+  const chartInstanceRef = useRef(null);
 
   useEffect(() => {
-    if (!waitersData || waitersData.length === 0 || !chartRef.current) return;
+    // Check if we have data and a canvas reference
+    if (!waitersData || waitersData.length === 0 || !chartRef.current) {
+      return;
+    }
 
     // Destroy existing chart before creating a new one
     if (chartInstanceRef.current) {
       chartInstanceRef.current.destroy();
     }
 
+    // Filter out waiters with no orders or revenue
+    const validWaiters = waitersData.filter(waiter => 
+      waiter && waiter.revenue > 0 && waiter.ordersCount > 0 && waiter.name
+    );
+
     // Sort waiters by revenue and get top 10
-    const topWaiters = [...waitersData]
+    const topWaiters = [...validWaiters]
       .sort((a, b) => b.revenue - a.revenue)
       .slice(0, 10);
 
+    // If no valid waiters remain, don't try to create a chart
+    if (topWaiters.length === 0) {
+      return;
+    }
+
     const ctx = chartRef.current.getContext('2d');
+    
+    // Create the chart
     chartInstanceRef.current = new Chart(ctx, {
       type: 'bar',
       data: {
@@ -31,6 +46,14 @@ const WaiterPerformanceChart = ({ waitersData }) => {
             borderColor: 'rgba(153, 102, 255, 1)',
             borderWidth: 1,
             yAxisID: 'y'
+          },
+          {
+            label: 'Orders Served',
+            data: topWaiters.map(waiter => waiter.ordersCount),
+            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+            yAxisID: 'y1'
           },
           {
             label: 'Items Served',
@@ -48,7 +71,7 @@ const WaiterPerformanceChart = ({ waitersData }) => {
         plugins: {
           title: {
             display: true,
-            text: 'Waiter Performance',
+            text: 'Top 10 Waiter Performance',
             font: {
               size: 16
             }
@@ -58,7 +81,7 @@ const WaiterPerformanceChart = ({ waitersData }) => {
           },
           tooltip: {
             callbacks: {
-              label: function (context) {
+              label: function(context) {
                 let label = context.dataset.label || '';
                 if (label) {
                   label += ': ';
@@ -74,6 +97,15 @@ const WaiterPerformanceChart = ({ waitersData }) => {
           }
         },
         scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Waiters',
+              font: {
+                size: 14
+              }
+            }
+          },
           y: {
             type: 'linear',
             display: true,
@@ -85,11 +117,8 @@ const WaiterPerformanceChart = ({ waitersData }) => {
                 size: 14
               }
             },
-            grid: {
-              drawOnChartArea: false
-            },
             ticks: {
-              callback: function (value) {
+              callback: function(value) {
                 return '₹' + value.toFixed(0);
               }
             }
@@ -100,7 +129,7 @@ const WaiterPerformanceChart = ({ waitersData }) => {
             position: 'right',
             title: {
               display: true,
-              text: 'Items Served',
+              text: 'Count',
               font: {
                 size: 14
               }
@@ -122,8 +151,13 @@ const WaiterPerformanceChart = ({ waitersData }) => {
   }, [waitersData]);
 
   return (
-    <div className="chart-wrapper">
-      <canvas ref={chartRef} height="300"></canvas>
+    <div className="dashboard-card">
+      <div className="chart-wrapper" style={{ height: "400px", width: "100%" }}>
+        <canvas ref={chartRef}></canvas>
+      </div>
+      {(!waitersData || waitersData.length === 0) && (
+        <div className="no-data-message">No waiter data available</div>
+      )}
     </div>
   );
 };
