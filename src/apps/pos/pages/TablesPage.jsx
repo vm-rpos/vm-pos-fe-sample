@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import TableForm from "../components/TablesPage/TableForm";
 import TableList from "../components/TablesPage/TableList";
+import '../styles/TablesPage.css'
 
 const TablesPage = () => {
   const [tables, setTables] = useState([]);

@@ -1,10 +1,10 @@
-import React from 'react';
-import { format } from 'date-fns'; // You'll need to install this package
+import React from "react";
+import { format } from "date-fns"; // You'll need to install this package
 
 const OrdersTable = ({ orders }) => {
   return (
     <div className="dashboard-card orders-table">
-      <h2>Orders (High to Low Price)</h2>
+      <h2>Top 10 Orders</h2>
       <table className="dashboard-table">
         <thead>
           <tr>
@@ -22,14 +22,14 @@ const OrdersTable = ({ orders }) => {
               <tr key={order._id}>
                 <td>{order._id.substring(0, 8)}...</td>
                 <td>{order.tableName || `Table ${order.tableNumber}`}</td>
-                <td>{order.items.length} items</td>
+                <td>{order.items.reduce((sum, item) => sum + item.quantity, 0)} items</td>
                 <td>₹{order.total.toFixed(2)}</td>
                 <td>
                   <span className={`status-badge ${order.status}`}>
                     {order.status}
                   </span>
                 </td>
-                <td>{format(new Date(order.createdAt), 'MMM d, h:mm a')}</td>
+                <td>{format(new Date(order.createdAt), "MMM d, h:mm a")}</td>
               </tr>
             ))
           ) : (

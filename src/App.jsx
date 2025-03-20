@@ -13,6 +13,7 @@ import SaleOrderPage from "./apps/inventory/pages/SaleOrderPage";
 import StockoutOrderPage from "./apps/inventory/pages/StockoutOrderPage";
 import VendorPage from "./apps/inventory/pages/VendorPage";
 import OrderManagementPage from "./apps/inventory/pages/OrderManagementPage";
+import './App.css';
 
 function App() {
   return (
@@ -35,7 +36,10 @@ function App() {
         <Route path="/inventory/orders" element={<OrderManagementPage />} />
       </Routes>
     </Router>
-    <a href="/home">Inventory-Management</a>
+    <a href="/home" className="text-red-600 hover:text-blue-800 font-semibold underline">
+  Inventory-Management
+</a>
+
     </>
   );
 }

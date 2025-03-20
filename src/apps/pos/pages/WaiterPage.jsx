@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import WaiterForm from "../components/WaiterPage/WaiterForm";
 import WaiterList from "../components/WaiterPage/WaiterList";
+import '../styles/WaiterPage.css'
 
 const API_BASE_URL = "http://localhost:5000/api/waiters";
 
@@ -74,25 +75,37 @@ const WaiterPage = () => {
   };
 
   return (
-    <div>
-      <h2>Waiters</h2>
-      {isEditing ? (
-        <WaiterForm 
-          addWaiter={addWaiter} 
-          updateWaiter={updateWaiter}
-          waiter={currentWaiter}
-          isEditing={isEditing}
-          cancelEdit={cancelEdit}
-        />
-      ) : (
-        <WaiterForm addWaiter={addWaiter} />
-      )}
-      <WaiterList 
-        waiters={waiters} 
-        deleteWaiter={deleteWaiter}
-        editWaiter={editWaiter}
-      />
-      <button onClick={() => navigate("/")}>Back</button>
+    <div className="container">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2>Waiter Management</h2>
+        <button className="btn btn-outline" onClick={() => navigate("/")}>
+          Back to Dashboard
+        </button>
+      </div>
+
+      <div className="waiter-page">
+        <div>
+          {isEditing ? (
+            <WaiterForm
+              addWaiter={addWaiter}
+              updateWaiter={updateWaiter}
+              waiter={currentWaiter}
+              isEditing={isEditing}
+              cancelEdit={cancelEdit}
+            />
+          ) : (
+            <WaiterForm addWaiter={addWaiter} />
+          )}
+        </div>
+        
+        <div>
+          <WaiterList
+            waiters={waiters}
+            deleteWaiter={deleteWaiter}
+            editWaiter={editWaiter}
+          />
+        </div>
+      </div>
     </div>
   );
 };

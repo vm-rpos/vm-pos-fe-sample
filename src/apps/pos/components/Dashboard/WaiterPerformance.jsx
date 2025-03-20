@@ -1,6 +1,11 @@
 import React from 'react';
 
 const WaiterPerformance = ({ waitersData }) => {
+  // Filter out waiters with no orders or no revenue
+  const activeWaiters = waitersData.filter(waiter => 
+    waiter.ordersCount > 0 && waiter.revenue > 0
+  );
+
   return (
     <div className="dashboard-card">
       <h2>Waiter Performance</h2>
@@ -15,8 +20,8 @@ const WaiterPerformance = ({ waitersData }) => {
           </tr>
         </thead>
         <tbody>
-          {waitersData.length > 0 ? (
-            waitersData.map((waiter, index) => (
+          {activeWaiters.length > 0 ? (
+            activeWaiters.map((waiter, index) => (
               <tr key={index}>
                 <td>{waiter.name}</td>
                 <td>{waiter.ordersCount}</td>

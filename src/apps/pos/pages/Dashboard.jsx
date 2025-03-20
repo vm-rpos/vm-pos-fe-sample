@@ -7,6 +7,7 @@ import DataTable from '../components/Dashboard/DataTable.jsx';
 import OrdersTable from '../components/Dashboard/OrdersTable.jsx';
 import OrderCharts from '../components/Dashboard/OrderCharts.jsx';
 import WaiterPerformance from '../components/Dashboard/WaiterPerformance.jsx'; // Import the new component
+import '../styles/Dashboard.css'
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -19,6 +20,8 @@ const Dashboard = () => {
   useEffect(() => {
     fetchAnalytics();
   }, [timeRange]);
+
+  
   
   const fetchAnalytics = async () => {
     try {
@@ -28,7 +31,8 @@ const Dashboard = () => {
       
       // Also fetch orders
       const ordersResponse = await axios.get(`http://localhost:5000/api/orders?timeRange=${timeRange}`);
-      
+      // const ordersResponse = await axios.get(`http://localhost:5000/api/orders?timeRange=${timeRange}&status=completed`);
+
       // Sort orders by total price (high to low)
       const sortedOrders = ordersResponse.data.sort((a, b) => b.total - a.total);
       setOrders(sortedOrders);
@@ -41,6 +45,8 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
+
+
   
   if (loading) return <div className="loading">Loading dashboard data...</div>;
   if (error) return <div className="error">{error}</div>;
@@ -48,19 +54,13 @@ const Dashboard = () => {
   
   return (
     <div className="dashboard-container">
-      <h1>Restaurant Dashboard</h1>
+      {/* <h1>Restaurant Dashboard</h1> */}
+    
       
       <DashboardHeader timeRange={timeRange} setTimeRange={setTimeRange} fetchAnalytics={fetchAnalytics} />
       <StatsCards analyticsData={analyticsData} />
       
-      {/* Add Charts */}
-      <OrderCharts 
-        analyticsData={analyticsData} 
-        timeRange={timeRange} 
-        orders={orders}
-      />
-      
-      {/* Waiter Performance Table */}
+      Waiter Performance Table
       {analyticsData.waitersData && analyticsData.waitersData.length > 0 && (
         <WaiterPerformance waitersData={analyticsData.waitersData} />
       )}
@@ -68,7 +68,7 @@ const Dashboard = () => {
       {/* Order Table */}
       <OrdersTable orders={orders} />
       
-      <div className="dashboard-grid">
+       <div className="dashboard-grid">
         <DataTable
           title="Most Popular Items"
           columns={['Item', 'Quantity Sold', 'Revenue']}
@@ -110,6 +110,14 @@ const Dashboard = () => {
             }))}
         />
       </div>
+
+      {/* Add Charts */}
+      <OrderCharts 
+        analyticsData={analyticsData} 
+        timeRange={timeRange} 
+        orders={orders}
+      />
+      
       
       <div className="navigation">
         <button onClick={() => navigate('/')}>Back to Tables</button>

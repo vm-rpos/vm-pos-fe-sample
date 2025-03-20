@@ -1,0 +1,426 @@
+/* Vendor Management - Main Styling */
+:root {
+    --primary: #3498db;
+    --primary-dark: #2980b9;
+    --secondary: #34495e;
+    --success: #27ae60;
+    --danger: #e74c3c;
+    --warning: #f39c12;
+    --light: #f8fafc;
+    --gray: #95a5a6;
+    --dark: #2c3e50;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --transition: all 0.2s ease-in-out;
+}
+
+/* Main Container */
+body {
+    font-family: var(--font-sans);
+    color: var(--dark);
+    background-color: #f5f7fa;
+    line-height: 1.5;
+}
+
+/* Vendor Page Container */
+.vendor-page {
+    max-width: 1280px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+.vendor-page h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #eaeaea;
+    position: relative;
+}
+
+.vendor-page h2::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+}
+
+/* Side by side container for form and list */
+.vendor-content-container {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+/* Vendor Form */
+.vendor-form {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #eaeaea;
+    flex: 1;
+    min-width: 0; /* Important for flex items */
+}
+
+.vendor-form h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+.vendor-form h4 {
+    font-size: 1.1rem;
+    margin: 1.5rem 0 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eaeaea;
+    color: var(--secondary);
+    font-weight: 500;
+}
+
+.vendor-form form {
+    display: grid;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .vendor-form form {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .vendor-form h4 {
+        grid-column: span 2;
+    }
+
+    .vendor-form .form-actions {
+        grid-column: span 2;
+        display: flex;
+        justify-content: flex-start;
+        gap: 1rem;
+        margin-top: 0.5rem;
+    }
+}
+
+.vendor-form input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    transition: var(--transition);
+    background-color: var(--light);
+}
+
+.vendor-form input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+    background-color: white;
+}
+
+.vendor-form button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 1rem;
+    text-align: center;
+}
+
+.vendor-form button[type="submit"] {
+    background-color: var(--primary);
+    color: white;
+}
+
+.vendor-form button[type="submit"]:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.vendor-form button[type="button"] {
+    background-color: var(--gray);
+    color: white;
+}
+
+.vendor-form button[type="button"]:hover {
+    background-color: #7f8c8d;
+}
+
+/* Alerts */
+.alert {
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.alert-error {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border-left: 4px solid var(--danger);
+}
+
+.alert-success {
+    background-color: #d1fae5;
+    color: #065f46;
+    border-left: 4px solid var(--success);
+}
+
+/* Vendor List */
+.vendor-list {
+    flex: 1;
+    min-width: 0; /* Important for flex items */
+    height: auto;
+}
+
+.vendor-list h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+.vendor-list ul {
+    list-style-type: none;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+}
+
+.vendor-list li {
+    background: white;
+    padding: 1.25rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #eaeaea;
+    transition: var(--transition);
+    position: relative;
+}
+
+.vendor-list li:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.vendor-list strong {
+    color: var(--secondary);
+    font-size: 1.1rem;
+}
+
+.vendor-item {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.vendor-item .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.vendor-item .vendor-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.vendor-item .vendor-info {
+    display: flex;
+    gap: 1.5rem;
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.vendor-item .info-divider {
+    color: #cbd5e1;
+}
+
+.vendor-item .location-details {
+    background-color: var(--light);
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    border-left: 3px solid var(--primary);
+}
+
+.vendor-item .vendor-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.vendor-item button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vendor-item button.edit-btn {
+    background-color: var(--primary);
+    color: white;
+}
+
+.vendor-item button.edit-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+.vendor-item button.delete-btn {
+    background-color: var(--danger);
+    color: white;
+}
+
+.vendor-item button.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    background-color: var(--light);
+    border-radius: var(--radius-lg);
+    color: #64748b;
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Navigation */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.25rem;
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 2rem;
+}
+
+.back-button:hover {
+    background-color: var(--dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.back-button::before {
+    content: '←';
+    font-size: 1.1rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.vendor-list li {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Custom Scrollbar */
+.vendor-list {
+    max-height: 650px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.vendor-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.vendor-list::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.vendor-list::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 10px;
+}
+
+/* Loading State Animation */
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: var(--gray);
+    animation: pulse 1.5s infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .vendor-content-container {
+        flex-direction: column;
+    }
+    
+    .vendor-form, .vendor-list {
+        width: 100%;
+    }
+    
+    .vendor-list {
+        margin-top: 2rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .vendor-page {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    .vendor-item .item-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .vendor-item .vendor-info {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .vendor-item .info-divider {
+        display: none;
+    }
+    
+    .vendor-form button {
+        width: 100%;
+    }
+}

@@ -4,6 +4,7 @@ import axios from 'axios';
 import CategoryList from '../components/TableDetailPage/CategoryList';
 import MenuItems from '../components/TableDetailPage/MenuItems';
 import OrderSummary from '../components/TableDetailPage/OrderSummary';
+import '../styles/TableDetailPage.css'
 
 const TableDetailPage = () => {
   const { id } = useParams();

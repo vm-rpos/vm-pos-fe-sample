@@ -3,20 +3,23 @@ import Chart from 'chart.js/auto';
 
 const WaiterPerformanceChart = ({ waitersData }) => {
   const chartRef = useRef(null);
+  const chartInstanceRef = useRef(null); // Store chart instance here
 
   useEffect(() => {
     if (!waitersData || waitersData.length === 0 || !chartRef.current) return;
 
-    // Destroy existing chart
-    if (chartRef.current.chartInstance) {
-      chartRef.current.chartInstance.destroy();
+    // Destroy existing chart before creating a new one
+    if (chartInstanceRef.current) {
+      chartInstanceRef.current.destroy();
     }
 
-    // Get top 10 waiters by revenue
-    const topWaiters = waitersData.slice(0, 10);
-    
+    // Sort waiters by revenue and get top 10
+    const topWaiters = [...waitersData]
+      .sort((a, b) => b.revenue - a.revenue)
+      .slice(0, 10);
+
     const ctx = chartRef.current.getContext('2d');
-    chartRef.current.chartInstance = new Chart(ctx, {
+    chartInstanceRef.current = new Chart(ctx, {
       type: 'bar',
       data: {
         labels: topWaiters.map(waiter => waiter.name),
@@ -55,7 +58,7 @@ const WaiterPerformanceChart = ({ waitersData }) => {
           },
           tooltip: {
             callbacks: {
-              label: function(context) {
+              label: function (context) {
                 let label = context.dataset.label || '';
                 if (label) {
                   label += ': ';
@@ -86,7 +89,7 @@ const WaiterPerformanceChart = ({ waitersData }) => {
               drawOnChartArea: false
             },
             ticks: {
-              callback: function(value) {
+              callback: function (value) {
                 return '₹' + value.toFixed(0);
               }
             }
@@ -110,9 +113,10 @@ const WaiterPerformanceChart = ({ waitersData }) => {
       }
     });
 
+    // Cleanup function to destroy chart when unmounting
     return () => {
-      if (chartRef.current?.chartInstance) {
-        chartRef.current.chartInstance.destroy();
+      if (chartInstanceRef.current) {
+        chartInstanceRef.current.destroy();
       }
     };
   }, [waitersData]);

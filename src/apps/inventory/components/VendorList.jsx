@@ -1,17 +1,25 @@
+// VendorList.jsx
 import React from "react";
 import VendorItem from "./VendorItem";
 
 const VendorList = ({ vendors, deleteVendor, editVendor }) => {
   return (
-    <div>
+    <div className="vendor-list">
       {vendors.length > 0 ? (
         <ul>
           {vendors.map((vendor) => (
-            <VendorItem key={vendor._id} vendor={vendor} deleteVendor={deleteVendor} editVendor={editVendor} />
+            <VendorItem 
+              key={vendor._id} 
+              vendor={vendor} 
+              deleteVendor={deleteVendor} 
+              editVendor={editVendor} 
+            />
           ))}
         </ul>
       ) : (
-        <p>No vendors available.</p>
+        <div className="empty-state">
+          <p>No vendors available.</p>
+        </div>
       )}
     </div>
   );

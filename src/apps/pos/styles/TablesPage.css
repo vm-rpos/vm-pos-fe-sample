@@ -1,0 +1,387 @@
+/* Restaurant Tables Page Styles */
+.tables-page {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    color: #333;
+    font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+  
+  .tables-page h1 {
+    color: #2c3e50;
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    border-bottom: 2px solid #e74c3c;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+  }
+  
+  /* Navigation & Action Buttons */
+  .navigation,
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .navigation button,
+  .actions button {
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navigation button:hover,
+  .actions button:hover {
+    background-color: #1a252f;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .dashboard-button {
+    background-color: #3498db !important;
+  }
+  
+  .dashboard-button:hover {
+    background-color: #2980b9 !important;
+  }
+  
+  .menu-button {
+    background-color: #2ecc71 !important;
+  }
+  
+  .menu-button:hover {
+    background-color: #27ae60 !important;
+  }
+  
+  /* Table Form */
+  .table-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    border-left: 4px solid #3498db;
+  }
+  
+  .table-form input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .table-form input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.25);
+  }
+  
+  .table-form button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .table-form button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Tables List */
+  .tables-list {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+    margin-bottom: 2rem;
+  }
+  
+  .tables-list h2 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.75rem;
+  }
+  
+  .tables-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Table Item */
+  .tables-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
+    background-color: #fff;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .tables-list li:hover {
+    background-color: #f9f9f9;
+    transform: translateX(5px);
+  }
+  
+  .tables-list li.available {
+    border-left: 4px solid #2ecc71;
+  }
+  
+  .tables-list li.served {
+    border-left: 4px solid #e74c3c;
+  }
+  
+  .tables-list li a {
+    color: #2c3e50;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+  
+  .tables-list li a:hover {
+    color: #3498db;
+  }
+  
+  /* Table Actions */
+  .table-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .table-actions button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .edit-button {
+    background-color: #f39c12;
+    color: white;
+  }
+  
+  .edit-button:hover {
+    background-color: #e67e22;
+  }
+  
+  .cancel-button {
+    background-color: #95a5a6;
+    color: white;
+  }
+  
+  .cancel-button:hover {
+    background-color: #7f8c8d;
+  }
+  
+  .delete-button {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .delete-button:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Edit Table Form */
+  .tables-list li input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-right: 1rem;
+  }
+  
+  .tables-list li input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.25);
+  }
+  
+  .error-message {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    display: block;
+  }
+  
+  /* Status Indicators */
+  .tables-list li a::after {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-left: 10px;
+  }
+  
+  .tables-list li.available a::after {
+    background-color: #2ecc71;
+  }
+  
+  .tables-list li.served a::after {
+    background-color: #e74c3c;
+  }
+  
+  /* Loading State */
+  .tables-page > div:first-child:not(.tables-page) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    font-size: 1.2rem;
+    color: #555;
+    position: relative;
+  }
+  
+  .tables-page > div:first-child:not(.tables-page)::after {
+    content: '';
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: calc(50% + 30px);
+    left: calc(50% - 25px);
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Error State */
+  .error {
+    background-color: #ffecec;
+    color: #e74c3c;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #e74c3c;
+  }
+  
+  /* Empty State */
+  .tables-list p {
+    color: #7f8c8d;
+    font-style: italic;
+    text-align: center;
+    padding: 2rem 0;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .tables-page {
+      padding: 1rem;
+    }
+    
+    .table-form {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .table-form input,
+    .table-form button {
+      width: 100%;
+    }
+    
+    .tables-list li {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .tables-list li a {
+      margin-bottom: 1rem;
+    }
+    
+    .table-actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+  
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .tables-list li {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  /* Fix for the create table button */
+  .table-form button.text-4xl {
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+  }
+  
+  /* Hover effects */
+  .tables-list li:hover .table-actions {
+    opacity: 1;
+  }
+  
+  .tables-list li .table-actions {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
