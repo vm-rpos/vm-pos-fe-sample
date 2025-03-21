@@ -6,19 +6,33 @@ const WaiterSelector = ({ selectedWaiterId, onWaiterSelect }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const API_BASE_URL = "http://localhost:5000/api/waiters";
+  
   useEffect(() => {
     const fetchWaiters = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:5000/api/waiters');
-        setWaiters(response.data);
+        const restaurantId = JSON.parse(localStorage.getItem("user"))?.restaurantId;
+        
+        if (!restaurantId) {
+          setError("Restaurant ID not found");
+          setLoading(false);
+          return;
+        }
+        
+        const res = await axios.get(`${API_BASE_URL}?restaurantId=${restaurantId}`);
+        console.log("Waiters response:", res.data); // Debug log
+        
+        setWaiters(Array.isArray(res.data) ? res.data : []);
         setLoading(false);
       } catch (err) {
-        setError('Failed to load waiters');
+        console.error("Error fetching waiters:", err);
+        setError("Failed to load waiters: " + (err.response?.data?.message || err.message));
+        setWaiters([]);
         setLoading(false);
       }
     };
-
+    
     fetchWaiters();
   }, []);
 
@@ -29,9 +43,9 @@ const WaiterSelector = ({ selectedWaiterId, onWaiterSelect }) => {
   return (
     <div className="waiter-selector">
       <label htmlFor="waiter-select">Assign Waiter: </label>
-      <select 
-        id="waiter-select" 
-        value={selectedWaiterId || ''} 
+      <select
+        id="waiter-select"
+        value={selectedWaiterId || ''}
         onChange={(e) => onWaiterSelect(e.target.value)}
       >
         <option value="">Select a waiter</option>

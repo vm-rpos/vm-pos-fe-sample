@@ -29,19 +29,51 @@ const CategoryManagement = () => {
     fetchData();
   }, []);
 
+  // const fetchData = async () => {
+  //   try {
+  //     setLoading(true);
+  //     // Fetch categories
+  //     const categoriesResponse = await axios.get(
+  //       "http://localhost:5000/api/categories"
+  //     );
+  //     setCategories(categoriesResponse.data);
+
+  //     // Fetch tags
+  //     const tagsResponse = await axios.get("http://localhost:5000/api/tags");
+  //     setTags(tagsResponse.data);
+
+  //     setError(null);
+  //   } catch (err) {
+  //     setError("Failed to fetch data");
+  //     console.error("Error fetching data:", err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const fetchData = async () => {
     try {
       setLoading(true);
-      // Fetch categories
+      
+      // Get restaurantId from localStorage
+      const restaurantId = JSON.parse(localStorage.getItem("user"))?.restaurantId;
+      if (!restaurantId) {
+        setError("Restaurant ID not found");
+        return;
+      }
+      
+      // Fetch categories with restaurantId
       const categoriesResponse = await axios.get(
-        "http://localhost:5000/api/categories"
+        `http://localhost:5000/api/categories?restaurantId=${restaurantId}`
       );
       setCategories(categoriesResponse.data);
-
-      // Fetch tags
-      const tagsResponse = await axios.get("http://localhost:5000/api/tags");
+      
+      // Fetch tags with restaurantId
+      const tagsResponse = await axios.get(
+        `http://localhost:5000/api/tags?restaurantId=${restaurantId}`
+      );
       setTags(tagsResponse.data);
-
+      
       setError(null);
     } catch (err) {
       setError("Failed to fetch data");

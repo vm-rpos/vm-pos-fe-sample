@@ -17,15 +17,33 @@ const WaiterPage = () => {
     fetchWaiters();
   }, []);
 
+  // const fetchWaiters = async () => {
+  //   try {
+  //     const res = await axios.get(API_BASE_URL);
+  //     setWaiters(Array.isArray(res.data) ? res.data : []);
+  //   } catch (err) {
+  //     console.error("Error fetching waiters:", err);
+  //     setWaiters([]);
+  //   }
+  // };
+
   const fetchWaiters = async () => {
     try {
-      const res = await axios.get(API_BASE_URL);
-      setWaiters(Array.isArray(res.data) ? res.data : []);
+      const restaurantId = JSON.parse(localStorage.getItem("user"))?.restaurantId;
+      if (!restaurantId) {
+        console.error("Restaurant ID not found");
+        return;
+      }
+  
+      // const res = await axios.get(`${API_BASE_URL}/waiters?restaurantId=${restaurantId}`);
+      const res = await axios.get(`${API_BASE_URL}?restaurantId=${restaurantId}`);
+setWaiters(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Error fetching waiters:", err);
       setWaiters([]);
     }
   };
+  
 
   const addWaiter = async (formData) => {
     try {

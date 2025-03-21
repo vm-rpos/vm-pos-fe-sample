@@ -18,7 +18,13 @@ const TablesPage = () => {
   const fetchTables = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:5000/api/tables");
+      
+      const user = JSON.parse(localStorage.getItem("user")); // Retrieve stored user
+      if (!user?.restaurantId) {
+        throw new Error("Restaurant ID not found. Please log in again.");
+      }
+  
+      const response = await axios.get(`http://localhost:5000/api/tables?restaurantId=${user.restaurantId}`);
       setTables(response.data);
       setError(null);
     } catch (err) {
@@ -28,6 +34,7 @@ const TablesPage = () => {
       setLoading(false);
     }
   };
+  
 
   const createTable = async (name, tableNumber) => {
     try {
