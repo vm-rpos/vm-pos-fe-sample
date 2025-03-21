@@ -9,7 +9,8 @@ function SignupPage() {
     phonenumber: "",
     email: "",
     password: "",
-    restaurantId: ""
+    restaurantId: "",
+    pin: ""
   });
 
   const navigate = useNavigate();
@@ -20,6 +21,10 @@ function SignupPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!/^\d{4}$/.test(formData.pin)) {
+      alert("PIN must be a 4-digit number");
+      return;
+    }
     try {
       await axios.post("http://localhost:5000/api/auth/signup", formData);
       alert("Signup successful!");
@@ -37,6 +42,7 @@ function SignupPage() {
       <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
       <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
       <input type="text" name="restaurantId" placeholder="Restaurant ID" onChange={handleChange} required />
+      <input type="text" name="pin" placeholder="4-digit PIN" maxLength="4" onChange={handleChange} required />
       <button type="submit">Sign Up</button>
     </form>
   );
